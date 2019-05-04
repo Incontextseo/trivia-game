@@ -28,53 +28,124 @@
                   <h1>Totally 90's Country Trivia</h1>
                   
                   <hr>
-            
-                  <h2 class="question">Bacon ipsum dolor amet chuck shank?</h2>
-                  <p>Landjaeger beef rump, flank sausage turkey salami jerky burgdoggen biltong tail shankle. Pork cupim flank turducken jerky boudin short loin beef ribs pancetta jowl sirloin andouille. Beef ribs ground round porchetta ham brisket corned beef. Turducken rump kielbasa sausage porchetta, fatback ham pork chop strip steak meatloaf ham hock jerky meatball shankle tongue.</p>
-                  <p>Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!</p>
+                  <div id="start-button"></div>
+                  <h2 id="question"></h2>
+                  <div class="question-body">
+                  </div>
+                  <div class="explanation">
+                    <h2 id="announcement"></h2>
+                    <p id="user-choice"></p>
+                    <img id="correct-gif">
+                    <p id="correct-explanation"></p>
+                  </div>
+                  <div class="game-over">
+                    <h2 id="question"></h2>
+                    </div>
             
                 </section>
             
               </div>
             
     
-        <script
-    src="https://code.jquery.com/jquery-3.4.0.min.js">
+        <script src="https://code.jquery.com/jquery-3.4.0.min.js">
     </script>
     <script>
-    var questionsObj = [{
-        q = "Who release a song called Hillbilly shoes?",
-        choice1 = "Alan Jackson",
-        choice3 = "Montgomery Gentry",
-        choice4 = "Kenny Chesney",
-        answer = 3,
-        gifURL = "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
-        answerBody = "Montgomery Gentry released a song called Hillbilly Shoes. The song was on their album called Tattoos & Scars, that was released in 1999. The song peaked at number 13 on the US Billboard Hot Country Songs chart."},
+    var questionsArr = [{
+        q: "Who release a song called Hillbilly shoes?",
+        choices: ["Alan Jackson", "Reba McEntire", "Montgomery Gentry", "Kenny Chesney"],
+        answer: 3,
+        gifURL: "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
+        answerBody: "Montgomery Gentry released a song called Hillbilly Shoes. The song was on their album called Tattoos & Scars, that was released in 1999. The song peaked at number 13 on the US Billboard Hot Country Songs chart."},
         {
-            q = "Who release a song called Hillbilly shoes?",
-        choice1 = "Alan Jackson",
-        choice3 = "Montgomery Gentry",
-        choice4 = "Kenny Chesney",
-        answer = 3,
-        gifURL = "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
-        answerBody = "Montgomery Gentry released a song called Hillbilly Shoes. The song was on their album called Tattoos & Scars, that was released in 1999. The song peaked at number 13 on the US Billboard Hot Country Songs chart."},
+        q: "Question 2",
+        choices: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        answer: 2,
+        gifURL: "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
+        answerBody: "Landjaeger beef rump, flank sausage turkey salami jerky burgdoggen biltong tail shankle. Pork cupim flank turducken jerky boudin short loin beef ribs pancetta jowl sirloin andouille. Beef ribs ground round porchetta ham brisket corned beef. Turducken rump kielbasa sausage porchetta, fatback ham pork chop strip steak meatloaf ham hock jerky meatball shankle tongue."},
         {
-            q = "Who release a song called Hillbilly shoes?",
-        choice1 = "Alan Jackson",
-        choice3 = "Montgomery Gentry",
-        choice4 = "Kenny Chesney",
-        answer = 3,
-        gifURL = "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
-        answerBody = "Montgomery Gentry released a song called Hillbilly Shoes. The song was on their album called Tattoos & Scars, that was released in 1999. The song peaked at number 13 on the US Billboard Hot Country Songs chart."},
+        q: "Question 3",
+        choices: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        answer: 1,
+        gifURL: "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
+        answerBody: "Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!"},
         {
-            q = "Who release a song called Hillbilly shoes?",
-        choice1 = "Alan Jackson",
-        choice3 = "Montgomery Gentry",
-        choice4 = "Kenny Chesney",
-        answer = 3,
-        gifURL = "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
-        answerBody = "Montgomery Gentry released a song called Hillbilly Shoes. The song was on their album called Tattoos & Scars, that was released in 1999. The song peaked at number 13 on the US Billboard Hot Country Songs chart."},
-        ]
+        q: "Question 4",
+        choices: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        answer: 4,
+        gifURL: "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
+        answerBody: "Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!"}];
+
+      var userChoice;
+      var wins;
+      var losses;
+      var counter;
+
+      $(document).ready(function() {
+        // Insert Start button on page load
+        var startButton = $('<button id="start">').text("Start Game")
+        $('#start-button').html(startButton);
+
+        function nextQuestion() {
+          for (var i = 0; i = questionsArr.length; i++)
+            // TODO: Add timer to count down
+            // TODO: Push timer to DOM
+            // $('#timer').text("Time Remaining: " + counter )
+            // Populate the questions with text on DOM
+            $('#question').text(questionsArr[i].q)
+            for (var x = 0; x < 4; x++)
+              var choices = $('<button value="' + x +'">').text(questionsArr[i].choices[x])
+              $('.question-body').append(choices);
+        }
+
+        // function populateAnswer() {
+
+        // }
+
+        function gameOver() {
+          // Send wins tally to DOM
+          $('#wins').text("Correct Answers: " + wins);
+          // Send losses tally to DOM
+          $('#losses').text("Incorrect Answers: " + losses);
+        }
+
+        $('#start').on('click', function() {
+          console.log("Start Clicked")
+          // Hide start button
+          $(this).hide();
+            // Run First Question;
+            nextQuestion();
+        });
+
+        $('#choice').on('click', function() {
+          userChoice = parseInt($(this).val());
+          console.log(userChoice)
+            // If userChoice equals answer (win)
+            if (userChoice === questionsArr[i].answer) {
+                // Add a win to the wins variable
+                wins++;
+                // Send announcement to DOM
+                $('#announcement').text('You are correct!');
+                console.log("Wins: " + wins)
+                // Show the correct answer/explanation
+                populateAnswer();
+                // TODO: Timer until next question is shown
+                // go to next question
+                nextQuestion();
+            // If userChoice does not equal questionsArr[i].answer (loss)
+            } else if (userChoice !== questionsArr[i].answer) {
+                // Add a loss to the losses variable
+                losses++;
+                // Send announcement to DOM
+                $('#announcement').text('You are incorrect!');
+                console.log("Losses: " + losses)
+                // Show the correct answer/explanation
+                populateAnswer();
+                // TODO: Timer until next question is shown
+                // go to next question
+                nextQuestion();
+            }
+          });  
+        });
 
     </script>
 </body>
