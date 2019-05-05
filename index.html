@@ -40,7 +40,9 @@
                     <p id="correct-explanation"></p>
                   </div>
                   <div class="game-over">
-                    <h2 id="question"></h2>
+                    <h2 id="results"></h2>
+                    <div id="wins"></div>
+                    <div id="losses"></div>
                     </div>
             
                 </section>
@@ -83,13 +85,25 @@
       var counter = 30;
       var clockRunning = false;
       var correctAnswer;
+      var countdown;
+      var announcement;
 
       $(document).ready(function() {
         // Insert Start button on page load
         var startButton = $('<button id="start">').text("Start Game")
         $('#start-button').html(startButton);
 
-        setInterval(function countdown() { 
+        function generateQuestion() {
+          // Clear Previous Screen
+          $('#announcement').text("");
+          // Generate next question
+          if (questionNum === 4) {
+              console.log("Game Over!")
+              gameOver();
+            } else {
+              //Reset Clock
+              counter = 30
+              countdown = setInterval(function () { 
               counter--
               // Push timer to DOM
               $('#time-left').text("Time Remaining: " + counter )
@@ -99,12 +113,7 @@
                   console.log("Time's Up!");
                 }
               }, 1000);
-
-        function generateQuestion() {
-          if (questionNum === 4) {
-              console.log("Game Over!")
-              gameOver();
-            } else {
+              console.log(counter)
               var i = questionNum
               $('#question').text(questionsArr[i].q);
               console.log("Question: " + questionsArr[i].q);
@@ -114,20 +123,23 @@
               var choiceTwo = $('<button id="options" value="2">').text(questionsArr[i].choices[1]);
               var choiceThree = $('<button id="options" value="3">').text(questionsArr[i].choices[2]);
               var choiceFour = $('<button id="options" value="4">').text(questionsArr[i].choices[3]);
-              $('#choices').empty();
               $('#choices').append(choiceOne, choiceTwo, choiceThree, choiceFour);
             }
         }
 
-        // function populateAnswer() {
-
-        // }
-
-        // function clearScreen() {
-
-        // }
+        function populateAnswer() {
+          // Clear Question Divs
+          $('#time-left').text("");
+          $('#question').text("");
+          $('#choices').empty();
+          // Send announcement to DOM
+          $('#announcement').text(announcement);
+          setInterval(generateQuestion(), 1000);
+        }
 
         function gameOver() {
+          // Clear Previous Screen
+          $('#announcement').text("");
           // Send wins tally to DOM
           $('#wins').text("Correct Answers: " + wins);
           // Send losses tally to DOM
@@ -153,13 +165,14 @@
                   // Add a win to the wins variable
                   wins++;
                   // Send announcement to DOM
-                  $('#announcement').text('You are correct!');
+                  announcement = 'You are correct!';
                   console.log("Wins: " + wins)
                   // Show the correct answer/explanation
-                  // populateAnswer();
+                  populateAnswer();
                   // TODO: Timer until next question is shown
                   // go to next question
                   questionNum++
+
                   console.log("Question Number: " + questionNum)
                   generateQuestion();
               // If userChoice does not equal answer () (loss)
@@ -167,15 +180,15 @@
                   // Add a loss to the losses variable
                   losses++;
                   // Send announcement to DOM
-                  $('#announcement').text('You are incorrect!');
+                  announcement = 'You are incorrect!';
                   console.log("Losses: " + losses)
                   // Show the correct answer/explanation
-                  // populateAnswer();
+                  populateAnswer();
                   // TODO: Timer until next question is shown
                   // go to next question
                   questionNum++
               }
-
+              clearInterval(countdown);
             });  
           });
 
