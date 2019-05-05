@@ -36,13 +36,14 @@
                   <div class="explanation">
                     <h2 id="announcement"></h2>
                     <p id="user-choice"></p>
-                    <img id="correct-gif">
+                    <div id="correct-gif"></div>
                     <p id="correct-explanation"></p>
                   </div>
                   <div class="game-over">
                     <h2 id="results"></h2>
                     <div id="wins"></div>
                     <div id="losses"></div>
+                    <div id="misses"></div>
                     </div>
             
                 </section>
@@ -79,14 +80,24 @@
         answerBody: "Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!"}];
 
       var userChoice;
-      var questionNum = 0
+      var questionNum = 0;
+      var choiceOne;
+      var choiceTwo;
+      var choiceThree;
+      var choiceFour;
       var wins = 0;
       var losses = 0;
+      var misses = 0;
       var counter = 30;
-      var clockRunning = false;
       var correctAnswer;
       var countdown;
       var announcement;
+      var explanation;
+      var gif;
+      var choiceText;
+      var timer;
+      var time = 10;
+      var score;
 
       $(document).ready(function() {
         // Insert Start button on page load
@@ -96,6 +107,8 @@
         function generateQuestion() {
           // Clear Previous Screen
           $('#announcement').text("");
+          $('#correct-explanation').text("");
+          $('#correct-gif').html("");
           // Generate next question
           if (questionNum === 4) {
               console.log("Game Over!")
@@ -103,27 +116,40 @@
             } else {
               //Reset Clock
               counter = 30
+              clearInterval(timer);
+              clearInterval(countdown);
               countdown = setInterval(function () { 
               counter--
+              console.log(counter)
               // Push timer to DOM
               $('#time-left').text("Time Remaining: " + counter )
                 if (counter === 0) {
                   $('#time-left').text("Time's Up!")
+                  // Add a miss to the misses variable
+                  misses++;
+                  // Send announcement to DOM
+                  announcement = ('You ran out of time!');
+                  console.log("Missed Questions: " + misses);
+                  // Show the correct answer/explanation
+                  populateAnswer();
+                  questionNum++;
                   clearInterval(countdown);
                   console.log("Time's Up!");
                 }
               }, 1000);
-              console.log(counter)
               var i = questionNum
               $('#question').text(questionsArr[i].q);
               console.log("Question: " + questionsArr[i].q);
               correctAnswer = (questionsArr[i].answer);
               console.log("Correct Answer: " + correctAnswer)
-              var choiceOne = $('<button id="options" value="1">').text(questionsArr[i].choices[0]);
-              var choiceTwo = $('<button id="options" value="2">').text(questionsArr[i].choices[1]);
-              var choiceThree = $('<button id="options" value="3">').text(questionsArr[i].choices[2]);
-              var choiceFour = $('<button id="options" value="4">').text(questionsArr[i].choices[3]);
+              choiceOne = $('<button id="options" value="1">').text(questionsArr[i].choices[0]);
+              choiceTwo = $('<button id="options" value="2">').text(questionsArr[i].choices[1]);
+              choiceThree = $('<button id="options" value="3">').text(questionsArr[i].choices[2]);
+              choiceFour = $('<button id="options" value="4">').text(questionsArr[i].choices[3]);
+              $('#choices').empty();
               $('#choices').append(choiceOne, choiceTwo, choiceThree, choiceFour);
+              explanation = (questionsArr[i].answerBody);
+              gif = ('<img src="' + questionsArr[i].gifURL + '" height="200px">');
             }
         }
 
@@ -134,16 +160,32 @@
           $('#choices').empty();
           // Send announcement to DOM
           $('#announcement').text(announcement);
-          setInterval(generateQuestion(), 1000);
+          $('#correct-explanation').text(explanation);
+          $('#correct-gif').html(gif);
+          clearInterval(timer);
+          timer = setInterval(function(){
+             generateQuestion() 
+            }, 10000);
         }
 
         function gameOver() {
           // Clear Previous Screen
           $('#announcement').text("");
+          $('#correct-explanation').text("");
+          $('#correct-gif').html("");
+          clearInterval(timer);
+          clearInterval(countdown);
+          // Final score calculation
+          score = (parseInt(wins) / questionsArr.length) * 100
+          console.log(score);
+          // Send final score to DOM
+          $('#results').text("Your final score is " + score + "%");
           // Send wins tally to DOM
           $('#wins').text("Correct Answers: " + wins);
           // Send losses tally to DOM
           $('#losses').text("Incorrect Answers: " + losses);
+          // Send misses tally to DOM
+          $('#misses').text("Missed Questions: " + misses);
         }
 
         $('#start').on('click', function() {
@@ -159,35 +201,28 @@
         $('body').on('click', "#options", function(event) {
             console.log("Answer Clicked")
             userChoice = parseInt($(this).val());
+            choiceText = $(this).text();
+            console.log(choiceText)
             console.log("Value of clicked button: " + userChoice)
               // If userChoice equals answer (win)
               if (userChoice === correctAnswer) {
                   // Add a win to the wins variable
                   wins++;
                   // Send announcement to DOM
-                  announcement = 'You are correct!';
+                  announcement = ("You chose: " + choiceText + '. You are correct!');
                   console.log("Wins: " + wins)
-                  // Show the correct answer/explanation
-                  populateAnswer();
-                  // TODO: Timer until next question is shown
-                  // go to next question
-                  questionNum++
-
-                  console.log("Question Number: " + questionNum)
-                  generateQuestion();
               // If userChoice does not equal answer () (loss)
               } else if (userChoice !== correctAnswer) {
                   // Add a loss to the losses variable
                   losses++;
                   // Send announcement to DOM
-                  announcement = 'You are incorrect!';
+                  announcement = ("You chose: " + choiceText + '. You are incorrect!');
                   console.log("Losses: " + losses)
-                  // Show the correct answer/explanation
-                  populateAnswer();
-                  // TODO: Timer until next question is shown
-                  // go to next question
-                  questionNum++
               }
+              // Show the correct answer/explanation
+              populateAnswer();
+              // go to next question
+              questionNum++
               clearInterval(countdown);
             });  
           });
