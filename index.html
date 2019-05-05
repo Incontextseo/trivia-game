@@ -31,7 +31,7 @@
                   <div id="start-button"></div>
                   <div id="time-left"></div>
                   <h2 id="question"></h2>
-                  <div class="question-body">
+                  <div id="choices">
                   </div>
                   <div class="explanation">
                     <h2 id="announcement"></h2>
@@ -59,37 +59,64 @@
         answerBody: "Montgomery Gentry released a song called Hillbilly Shoes. The song was on their album called Tattoos & Scars, that was released in 1999. The song peaked at number 13 on the US Billboard Hot Country Songs chart."},
         {
         q: "Question 2",
-        choices: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        choices: ["2: Option 1", "2: Option 2", "2: Option 3", "2: Option 4"],
         answer: 2,
         gifURL: "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
         answerBody: "Landjaeger beef rump, flank sausage turkey salami jerky burgdoggen biltong tail shankle. Pork cupim flank turducken jerky boudin short loin beef ribs pancetta jowl sirloin andouille. Beef ribs ground round porchetta ham brisket corned beef. Turducken rump kielbasa sausage porchetta, fatback ham pork chop strip steak meatloaf ham hock jerky meatball shankle tongue."},
         {
         q: "Question 3",
-        choices: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        choices: ["3: Option 1", "3: Option 2", "3: Option 3", "3: Option 4"],
         answer: 1,
         gifURL: "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
         answerBody: "Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!"},
         {
         q: "Question 4",
-        choices: ["Option 1", "Option 2", "Option 3", "Option 4"],
+        choices: ["4: Option 1", "4: Option 2", "4: Option 3", "4: Option 4"],
         answer: 4,
         gifURL: "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
         answerBody: "Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!"}];
 
       var userChoice;
-      var wins;
-      var losses;
+      var questionNum = 0
+      var wins = 0;
+      var losses = 0;
       var counter = 30;
-      var choices;
       var clockRunning = false;
+      var correctAnswer;
 
       $(document).ready(function() {
         // Insert Start button on page load
         var startButton = $('<button id="start">').text("Start Game")
         $('#start-button').html(startButton);
 
-        function nextQuestion() {
+        setInterval(function countdown() { 
+              counter--
+              // Push timer to DOM
+              $('#time-left').text("Time Remaining: " + counter )
+                if (counter === 0) {
+                  $('#time-left').text("Time's Up!")
+                  clearInterval(countdown);
+                  console.log("Time's Up!");
+                }
+              }, 1000);
 
+        function generateQuestion() {
+          if (questionNum === 4) {
+              console.log("Game Over!")
+              gameOver();
+            } else {
+              var i = questionNum
+              $('#question').text(questionsArr[i].q);
+              console.log("Question: " + questionsArr[i].q);
+              correctAnswer = (questionsArr[i].answer);
+              console.log("Correct Answer: " + correctAnswer)
+              var choiceOne = $('<button id="options" value="1">').text(questionsArr[i].choices[0]);
+              var choiceTwo = $('<button id="options" value="2">').text(questionsArr[i].choices[1]);
+              var choiceThree = $('<button id="options" value="3">').text(questionsArr[i].choices[2]);
+              var choiceFour = $('<button id="options" value="4">').text(questionsArr[i].choices[3]);
+              $('#choices').empty();
+              $('#choices').append(choiceOne, choiceTwo, choiceThree, choiceFour);
+            }
         }
 
         // function populateAnswer() {
@@ -111,73 +138,46 @@
           console.log("Start Clicked")
           // Hide start button
           $(this).hide();
+          // Push Time Remaining to DOM
           $('#time-left').text("Time Remaining: " + counter )
-          clockRunning = true;
-          var countdown = setInterval(function() { 
-          counter--
-          // Push timer to DOM
-          $('#time-left').text("Time Remaining: " + counter )
-          if (counter === 0) {
-            $('#time-left').text("Time's Up!")
-            clearInterval(countdown);
-            console.log("Time's Up!");
-            // Set clockRunning to false - is this needed?
-            // clockRunning = false;
-            // TODO clearScreen
-
-            // Run populateAnswer data to move to the next screen
-            // populateAnswer();
-          }
-           }, 1000);
-            console.log(clockRunning, "test")
-          // TODO: 
-          //   // TODO: Add timer to count down
-          //   setTimeout(thirtySeconds, 30000);
-            // // Run First Question;
-            // nextQuestion();
-            for (var i = 0; i < questionsArr.length; i++)
           // Populate the questions with text on DOM
-          $('#question').text(questionsArr[i].q)
-          console.log("Loop")
-          for (var x = 0; x < 4; x++)
-            var choiceButtons = $('<button value="' + x + 1 +'">');
-              console.log(choiceButtons);
-            // choiceButtons.text(questionsArr[i].choices)
-            $('.question-body').append(choiceButtons);
-            // console.log(questionsArr[i].choices[x])
-  
-        });
+          generateQuestion();
+        })
 
-        $('#choice').on('click', function() {
-          userChoice = parseInt($(this).val());
-          console.log(userChoice)
-            // If userChoice equals answer (win)
-            if (userChoice === questionsArr[i].answer) {
-                // Add a win to the wins variable
-                wins++;
-                // Send announcement to DOM
-                $('#announcement').text('You are correct!');
-                console.log("Wins: " + wins)
-                // Show the correct answer/explanation
-                populateAnswer();
-                // TODO: Timer until next question is shown
-                // go to next question
-                nextQuestion();
-            // If userChoice does not equal questionsArr[i].answer (loss)
-            } else if (userChoice !== questionsArr[i].answer) {
-                // Add a loss to the losses variable
-                losses++;
-                // Send announcement to DOM
-                $('#announcement').text('You are incorrect!');
-                console.log("Losses: " + losses)
-                // Show the correct answer/explanation
-                populateAnswer();
-                // TODO: Timer until next question is shown
-                // go to next question
-                nextQuestion();
-            }
-          });  
-        });
+        $('body').on('click', "#options", function(event) {
+            console.log("Answer Clicked")
+            userChoice = parseInt($(this).val());
+            console.log("Value of clicked button: " + userChoice)
+              // If userChoice equals answer (win)
+              if (userChoice === correctAnswer) {
+                  // Add a win to the wins variable
+                  wins++;
+                  // Send announcement to DOM
+                  $('#announcement').text('You are correct!');
+                  console.log("Wins: " + wins)
+                  // Show the correct answer/explanation
+                  // populateAnswer();
+                  // TODO: Timer until next question is shown
+                  // go to next question
+                  questionNum++
+                  console.log("Question Number: " + questionNum)
+                  generateQuestion();
+              // If userChoice does not equal answer () (loss)
+              } else if (userChoice !== correctAnswer) {
+                  // Add a loss to the losses variable
+                  losses++;
+                  // Send announcement to DOM
+                  $('#announcement').text('You are incorrect!');
+                  console.log("Losses: " + losses)
+                  // Show the correct answer/explanation
+                  // populateAnswer();
+                  // TODO: Timer until next question is shown
+                  // go to next question
+                  questionNum++
+              }
+
+            });  
+          });
 
     </script>
 </body>
