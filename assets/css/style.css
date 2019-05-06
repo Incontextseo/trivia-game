@@ -2,7 +2,7 @@ body {
     font-family: 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
     background-color: #ffffff;
     color: #777777;
-    background-image: url("https://previews.123rf.com/images/kentoh/kentoh1004/kentoh100400325/6772895-country-music-genre-as-a-grunge-background.jpg");
+    background-image: url("https://wallpapercave.com/wp/2BDXYhN.jpg");
 }
 
 .site-header {
@@ -152,6 +152,23 @@ p {
     left: 508px;
 }
 
+#start, #options, #restart  {
+    margin: 4px;
+    background-color: #4aaaa5;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 30%;
+    cursor: pointer;
+}
+
+#options:hover {
+    background: #ddd;
+  }
 
 input[type=submit] {
     background: #4aaaa5;
