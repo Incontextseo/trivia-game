@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <title>Document</title>
+    <title>Totally 90's Country Trivia</title>
 </head>
 <body>
         <header class="site-header">
@@ -57,7 +57,7 @@
     </script>
     <script>
     var questionsArr = [{
-        q: "1. Who release a song called Hillbilly shoes?",
+        q: "1. Who released a song called Hillbilly shoes?",
         choices: ["Alan Jackson.", "Reba McEntire.", "Montgomery Gentry.", "Kenny Chesney."],
         answer: 3,
         gifURL: "https://media.giphy.com/media/3o6Mbqr2KXXVlEfZg4/giphy.gif",
@@ -134,12 +134,14 @@
       var gif;
       var choiceText;
       var timer;
-      var time = 10;
       var score;
+      var startButton;
+      var restartButton;
+      var i;
 
       $(document).ready(function() {
         // Insert Start button on page load
-        var startButton = $('<button id="start">').text("Start Game")
+        startButton = $('<button id="start">').text("Start Game")
         $('#start-button').html(startButton);
 
         function generateQuestion() {
@@ -175,7 +177,7 @@
                   console.log("Time's Up!");
                 }
               }, 1000);
-              var i = questionNum
+              i = questionNum
               $('#question').text(questionsArr[i].q);
               console.log("Question: " + questionsArr[i].q);
               correctAnswer = (questionsArr[i].answer);
@@ -203,7 +205,7 @@
           clearInterval(timer);
           timer = setInterval(function(){
              generateQuestion() 
-            }, 2000);
+            }, 12000);
         }
 
         function gameOver() {
@@ -221,7 +223,7 @@
           // Send misses tally to DOM
           $('#misses').text("Missed Questions: " + misses);
           // Insert "Retry the Quiz" button
-          var retryButton = $('<button id="restart">').text("Retry the Quiz!")
+          retryButton = $('<button id="restart">').text("Retry the Quiz!")
           $('#start-button').html(retryButton);
         }
 
@@ -284,7 +286,7 @@
           });
           $('body').on('click', '#restart', function() {
             console.log("Restart Clicked")
-            // Reset questionNum & scores
+            // Reset questionNum & tallies
             questionNum = 0;
             wins = 0;
             losses = 0;
@@ -293,13 +295,11 @@
             clearScreen();
             // Hide start button
             $(this).hide();
-            // Push Time Remaining to DOM
-            $('#time-left').text("Time Remaining: " + counter )
             // Populate the questions with text on DOM
             generateQuestion();
           });
   
-          });
+        });
 
     </script>
 </body>
