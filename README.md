@@ -25,6 +25,7 @@ Variables
 
 
 Javascript/Jquery
+ - Load Start Button & remove after click
  - Start button starts the game (on-click function)
     - Loop that goes through the questionsObj
         - If questions remain the game continues
