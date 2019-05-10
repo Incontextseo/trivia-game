@@ -6,7 +6,7 @@ var questionsArr = [{
     answerBody: "Montgomery Gentry released a song called Hillbilly Shoes. The song was on their album called Tattoos & Scars, that was released in 1999. The song peaked at number 13 on the US Billboard Hot Country Songs chart."},
     {
     q: "2. What was the name of Alabama's 1992 hit about always rushing to do things?",
-    choices: ["I'm in a Hurry.", "Born Country", "Clear Water Blues.", "Down Home."],
+    choices: ["I'm in a Hurry.", "Born Country.", "Clear Water Blues.", "Down Home."],
     answer: 1,
     gifURL: "https://media.giphy.com/media/39BdJ36C2j4f6vtjwi/giphy.gif",
     answerBody: "This song is called I'm in a Hurry (And Don't Know Why). The song covers the topic of rushing through life without understanding why we're rushing. The song was a hit for the band and is on their album titled American Pride."},
