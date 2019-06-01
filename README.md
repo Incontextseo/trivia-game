@@ -1,7 +1,5 @@
 # trivia-game
-Homework 5
-
-
+Homework 5 https://incontextseo.github.io/trivia-game/
 
 HTML
  - Background
